@@ -30,7 +30,10 @@
     - nodejs
     - rubygem-rdoc
     - git
-    - unzip
+    - gcc
+    - glibc-static
+    - ncurses-devel
+    - tmux
   - name: Install python modules
     pip:
       name: "{{ item.name }}"
@@ -38,55 +41,35 @@
       state: present
     with_items:
     - { name: 'ansible', version: '2.6.1' }
+    - { name: 'boto', version: '2.48.0' }
+    - { name: 'boto3', version: '1.7.62' }
     - { name: 'dnspython', version: '1.15.0' }
-    - { name: 'boto', version: '2.49.0' }
-    - { name: 'boto3', version: '1.7.58' }
   - name: Install Amazon Linux Extras topics
     command: amazon-linux-extras install {{ item.topic }}={{ item.version }}
     with_items:
     - { topic: 'python3', version: '3.6.2' }
-    - { topic: 'ruby2.4', version: '2.4.4' }
-    - { topic: 'php7.2', version: '7.2.5' }
-  - name: Install ruby gems
-    gem:
-      name: "{{ item }}"
-      user_install: no
-      state: present
-    with_items:
-    - bundler
-  - name: Install ruby-awstools
-    unarchive:
-      src: https://github.com/lnxjedi/ruby-awstools/archive/master.zip
-      dest: /usr/local/lib
-      remote_src: yes
-      creates: /usr/local/lib/ruby-awstools-master
-  - name: Set ownership on rawstools
-    file:
-      path: /usr/local/lib/ruby-awstools-master
-      owner: build
-      recurse: yes
-  - name: Symlink rawstools binaries
-    block:
-    - command: ls
-      args:
-        chdir: /usr/local/lib/ruby-awstools-master/bin
-      register: rawsbinaries
-    - file:
-        path: /usr/local/bin/{{ item }}
-        src: /usr/local/lib/ruby-awstools-master/bin/{{ item }}
-        state: link
-      with_items: "{{ rawsbinaries.stdout_lines }}"
+    - { topic: 'ruby2.4', version: '2.4.2' }
+    - { topic: 'php7.2', version: '7.2.0' }
   - name: Update all packages
     yum:
-      name: '*'
+      name: "*"
       state: latest
 
-- hosts: "{{ target }}:&dist_Amazon_2"
+- hosts: "{{ target }}"
+  name: Set up ruby-awstools
+  become: yes
   remote_user: build
-  name: Install rawstools requirements
+  roles:
+  - ruby-awstools
+  - golang
+
+- hosts: "{{ target }}"
+  name: Remove build user
+  become: yes
+  remote_user: "{{ build_remote }}"
   tasks:
-  - name: Run bundle install
-    command: /usr/local/bin/bundle install
-    args:
-      chdir: /usr/local/lib/ruby-awstools-master
-      creates: /usr/local/share/gems/gems/aws-sdk*
+  - user:
+      name: build
+      state: absent
+      remove: yes
+      force: yes

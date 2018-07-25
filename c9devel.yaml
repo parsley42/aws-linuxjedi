@@ -22,7 +22,7 @@
   import_playbook: platform-vars.yaml
 
 - hosts: "{{ target }}"
-  name: Set up data volume and users
+  name: Set up data volume, users and Go
   become: yes
   remote_user: build
   roles:
@@ -76,3 +76,10 @@
     - { topic: 'python3', version: '3.6.2' }
     - { topic: 'ruby2.4', version: '2.4.2' }
     - { topic: 'php7.2', version: '7.2.0' }
+
+- hosts: "{{ target }}"
+  name: Set up ruby-awstools
+  become: yes
+  remote_user: build
+  roles:
+  - ruby-awstools

@@ -18,7 +18,7 @@ $ aws ec2 describe-instances
 ...
 ```
 
-## Manually Building a Cloud9 Instance from a Native Instance
+## Manually Building an Instance
 
 The temporary credentials managed by Cloud9 aren't usable by `ansible_hosts.dynamic`, so source `static-hosts` to use `ansible_hosts.yaml`.
 
@@ -39,9 +39,9 @@ info: Loading api template /home/ec2-user/environment/ruby-awstools/lib/rawstool
 info: Loading api template /home/ec2-user/environment/ruby-awstools/lib/rawstools/templates/route53/arec.yaml
 ```
 
-* Run the `aws_init` playbook:
+* Run the `aws_init` playbook; you may need to provide `--key-file <name>`:
 ```bash
-$ ansible-playbook aws_init.yaml -e target=parse
+$ ansible-playbook aws_init.yaml -e target=parse --key-file ~/.ssh/aws-lj.pem
 
 PLAY [Wait for DNS and get initial SSH keys] ******************************************************************************************
 
