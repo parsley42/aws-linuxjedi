@@ -1,6 +1,8 @@
 ---
-# c9devel.yaml - playbook for configuring an AWS Cloud9 Developer instance
-# on Amazon Linux 2
+# c9devel.yaml - playbook for creating a LinuxJedi devel bastion from
+# an ljbase AMI created with ljstandard.yaml
+
+# note: run aws_init first to create the build user
 
 - hosts: "{{ target }}"
   remote_user: build
@@ -25,61 +27,29 @@
   name: Set up data volume, users and Go
   become: yes
   remote_user: build
-  roles:
-  - data_vol_single
-  - golang
-  - ruby-awstools
-  - ansible-users
-
-- hosts: "{{ target }}:&dist_Amazon_2"
-  become: yes
-  remote_user: build
-  name: Customize the environment
   tasks:
-  - name: Sudo nopasswd for wheel
-    lineinfile: "dest=/etc/sudoers state=present regexp='^%wheel' line='%wheel ALL=(ALL) NOPASSWD: ALL'"
-  - name: Install EPEL 7 repository
-    yum:
-      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-      state: latest
-  - name: Install EPEL gpg key
-    rpm_key:
-      state: present
-      key: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-  - name: Install extra packages
-    yum:
-      name: "{{ item }}"
-      state: latest
-    with_items:
-    - jq
-    - python2-pip
-    - nodejs
-    - rubygem-rdoc
-    - git
-    - gcc
-    - glibc-static
-    - ncurses-devel
-    - tmux
-  - name: Install python modules
-    pip:
-      name: "{{ item.name }}"
-      version: "{{ item.version }}"
-      state: present
-    with_items:
-    - { name: 'ansible', version: '2.6.1' }
-    - { name: 'boto', version: '2.48.0' }
-    - { name: 'boto3', version: '1.7.62' }
-    - { name: 'dnspython', version: '1.15.0' }
-  - name: Install Amazon Linux Extras topics
-    command: amazon-linux-extras install {{ item.topic }}={{ item.version }}
-    with_items:
-    - { topic: 'python3', version: '3.6.2' }
-    - { topic: 'ruby2.4', version: '2.4.2' }
-    - { topic: 'php7.2', version: '7.2.0' }
+  - name: Remove launch user
+    user:
+      name: "{{ build_remote }}"
+      state: absent
+      remove: yes
+      force: yes
+  - name: Data Volume role
+    import_role:
+      name: data_vol_single
+  - name: Create Users role
+    import_role:
+      name: ansible-users
 
 - hosts: "{{ target }}"
-  name: Set up ruby-awstools
+  name: Remove build user authorized keys
   become: yes
   remote_user: build
-  roles:
-  - ruby-awstools
+  tasks:
+  - file:
+      path: /build/.ssh/authorized_keys
+      state: absent
+  - user:
+      name: build
+      state: absent
+      force: yes

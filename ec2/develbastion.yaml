@@ -3,8 +3,7 @@ tags:
   Platform: AmazonLinux
 private_sg: true
 api_template:
-#  image_id: ${@ami|${/ami/ljstd}}
-  image_id: ${@ami|${/ami/amzn2}}
+  image_id: ${@ami|${/ami/ljbase}}
   user_data: $UserDataStandard
   instance_type: ${@type|t2.small}
   block_device_mappings:
