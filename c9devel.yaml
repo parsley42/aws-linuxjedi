@@ -28,6 +28,7 @@
   roles:
   - data_vol_single
   - golang
+  - ruby-awstools
   - ansible-users
 
 - hosts: "{{ target }}:&dist_Amazon_2"

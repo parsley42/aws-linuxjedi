@@ -1,0 +1,29 @@
+  - name: Install bundler and other prerequirements
+    gem:
+      name: "{{ item }}"
+      user_install: no
+      state: present
+    with_items:
+    - bundler
+  - name: Install ruby-awstools
+    unarchive:
+      src: https://github.com/lnxjedi/ruby-awstools/archive/master.zip
+      dest: /usr/local/lib
+      remote_src: yes
+      creates: /usr/local/lib/ruby-awstools-master
+  - name: Symlink rawstools binaries
+    block:
+    - command: ls
+      args:
+        chdir: /usr/local/lib/ruby-awstools-master/bin
+      register: rawsbinaries
+    - file:
+        path: /usr/local/bin/{{ item }}
+        src: /usr/local/lib/ruby-awstools-master/bin/{{ item }}
+        state: link
+      with_items: "{{ rawsbinaries.stdout_lines }}"
+  - name: Run bundle install
+    command: /usr/local/bin/bundle install
+    args:
+      chdir: /usr/local/lib/ruby-awstools-master
+      creates: /usr/local/share/gems/gems/aws-sdk*
