@@ -1,0 +1,6 @@
+---
+# Common stack for creating the ruby-awstools library bucket
+MainTemplate: main.yaml
+StackName: C9SSHAccess
+Parameters:
+  VpcId: ${=MgmtVPC:rVPCManagement}

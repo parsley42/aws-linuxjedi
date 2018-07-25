@@ -1,0 +1,28 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Stack that creates security groups for allowing ssh from
+  CLOUD9 in the us-east-1 region
+Parameters:
+    VpcId:
+        Description: The ID of the VPC where the SecurityGroup will be created
+        Type: String
+Resources:
+  USEastCloud9SecurityGroup0:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      VpcId: !Ref VpcId
+      GroupDescription: "Enable SSH access from CLOUD9 in us-east-1 region"
+      SecurityGroupIngress:
+      - IpProtocol: "tcp"
+        FromPort: "22"
+        ToPort: "22"
+        CidrIp: "35.172.155.192/27"
+      - IpProtocol: "tcp"
+        FromPort: "22"
+        ToPort: "22"
+        CidrIp: "35.172.155.96/27"
+# Added 2 entries
+Outputs:
+  UsEastCloud9SSHSG0:
+    Description: Security Group Allowing SSH from us-east-1 CLOUD9
+    Value: !Ref USEastCloud9SecurityGroup0

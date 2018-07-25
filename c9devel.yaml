@@ -1,0 +1,77 @@
+---
+# c9devel.yaml - playbook for configuring an AWS Cloud9 Developer instance
+# on Amazon Linux 2
+
+- hosts: "{{ target }}"
+  remote_user: build
+  tasks:
+  - name: Set mountpoints for a Cloud9 developer instances
+    set_fact:
+      remote_user: build
+      mount_points:
+      - dir_name: home
+        mount_point: /home
+      - dir_name: www
+        mount_point: /var/www
+      - dir_name: httpconf
+        mount_point: /etc/httpd/conf.d
+      - dir_name: ssl
+        mount_point: /etc/pki
+# platform-specific definitions including data volumes
+- name: Set platform-specific variables
+  import_playbook: platform-vars.yaml
+
+- hosts: "{{ target }}"
+  name: Set up data volume and users
+  become: yes
+  remote_user: build
+  roles:
+  - data_vol_single
+  - golang
+  - ansible-users
+
+- hosts: "{{ target }}:&dist_Amazon_2"
+  become: yes
+  remote_user: build
+  name: Customize the environment
+  tasks:
+  - name: Sudo nopasswd for wheel
+    lineinfile: "dest=/etc/sudoers state=present regexp='^%wheel' line='%wheel ALL=(ALL) NOPASSWD: ALL'"
+  - name: Install EPEL 7 repository
+    yum:
+      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+      state: latest
+  - name: Install EPEL gpg key
+    rpm_key:
+      state: present
+      key: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+  - name: Install extra packages
+    yum:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+    - jq
+    - python2-pip
+    - nodejs
+    - rubygem-rdoc
+    - git
+    - gcc
+    - glibc-static
+    - ncurses-devel
+    - tmux
+  - name: Install python modules
+    pip:
+      name: "{{ item.name }}"
+      version: "{{ item.version }}"
+      state: present
+    with_items:
+    - { name: 'ansible', version: '2.6.1' }
+    - { name: 'boto', version: '2.48.0' }
+    - { name: 'boto3', version: '1.7.62' }
+    - { name: 'dnspython', version: '1.15.0' }
+  - name: Install Amazon Linux Extras topics
+    command: amazon-linux-extras install {{ item.topic }}={{ item.version }}
+    with_items:
+    - { topic: 'python3', version: '3.6.2' }
+    - { topic: 'ruby2.4', version: '2.4.2' }
+    - { topic: 'php7.2', version: '7.2.0' }

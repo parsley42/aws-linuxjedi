@@ -1,0 +1,59 @@
+---
+# cloudconfig.yaml - central config file for ruby-awstools library
+
+# Where to search for common definitions
+SearchPath:
+# Base LinuxJedi core infrastructure off of the Reference Architecture
+- ../linuxjedi-private
+- ../ruby-awstools/examples/ReferenceArchitecture
+
+# SimpleDB domain for storing configuration type data, e.g.
+# ${%ami:amznlinux}. Value for DefaultSDB is required to resolve $ {%...}
+# references.
+ConfigDB: ${=ConfigDB:ConfigDB}
+DefaultSDB: ConfigDB
+
+# Specify to override a region specified in the environment or
+# credential configuration.
+#Region: us-east-1
+
+# Common tags to be applied to any resources created
+Tags:
+  Creator: 'parsley@linuxjedi.org'
+  Project: LinuxJedi
+  Repository: github.com/parsley/aws-linuxjedi
+# Lists of CIDRs can be referenced in ACLs using Ref:\n"$<somelist>". See
+# the vpc templates for examples. Acls will be expanded as needed.
+#
+# IP Ranges for your organization, used for access to e.g. Intranet
+# and Management subnets.
+# CIDRLists:
+#   BastionCIDRs:
+#   - 76.0.0.0/13 # CenturyLink
+#   - 137.54.129.0/24 # Work
+# Variables for the Management VPC
+MgmtCIDR: 10.42.0.0/22
+MgmtDMZACIDR: 10.42.0.0/24
+MgmtDMZBCIDR: 10.42.1.0/24
+MgmtPVTACIDR: 10.42.2.0/24
+MgmtPVTBCIDR: 10.42.3.0/24
+RegionAZ1: us-east-1a
+RegionAZ2: us-east-1b
+# AWS hosted public DNS
+DNSBase: "linuxjedi.org"
+# Instances in the VPC will resolve hostnames to the private zone and
+# get VPC-internal addresses
+DNSDomain: "linuxjedi.org"
+PrivateDNSId: ${=PrivateDNS:PrivateDNS}
+ARecTTL: 300
+CNAMERecTTL: 600
+TXTRecTTL: 120
+
+# Variables
+NotifyMail: parsley@linuxjedi.org
+# For most ec2 templates with a monolithic data volume
+UserDataStandard: |
+  #cloud-config
+  runcmd:
+  - /usr/bin/sed -i "s/ requiretty/ !requiretty/" /etc/sudoers
+  - growpart /dev/xvdf 1; if [ $? -eq 0 ]; then mount /dev/xvdf1 /mnt; xfs_growfs /mnt; umount /mnt; fi

@@ -1,0 +1,27 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Private DNS Zone for VPCs, to integrate with ruby-awstools DNS updates
+Parameters:
+    ZoneName:
+        Description: The private DNS zone to create
+        Type: String
+Resources:
+    PrivateDNS:
+        Type: AWS::Route53::HostedZone
+        Properties:
+            Name: !Ref ZoneName
+            VPCs:
+            -   VPCId: vpc-cbe089b3
+                VPCRegion: us-east-1
+            -   VPCId: vpc-518afe29
+                VPCRegion: us-east-1
+            -   VPCId: vpc-88f88cf0
+                VPCRegion: us-east-1
+            HostedZoneTags:
+            -   Key: Creator
+                Value: parsley@linuxjedi.org
+            -   Key: Project
+                Value: LinuxJedi
+            -   Key: Repository
+                Value: github.com/parsley/aws-linuxjedi
+Outputs: {}

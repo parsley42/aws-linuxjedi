@@ -1,0 +1,13 @@
+---
+SourceStack: clientvpc # each spoke VPC should reference this source stack
+StackName: ProdVPC
+Parameters:
+  pProductionVPCName: ProdVPC
+  pEnvironment: Production
+  pProductionCIDR: 10.42.4.0/22
+  pDMZSubnetACIDR: 10.42.4.0/24
+  pDMZSubnetBCIDR: 10.42.5.0/24
+  pAppPrivateSubnetACIDR: 10.42.6.0/25
+  pAppPrivateSubnetBCIDR: 10.42.6.128/25
+  pDBPrivateSubnetACIDR: 10.42.7.0/25
+  pDBPrivateSubnetBCIDR: 10.42.7.128/25

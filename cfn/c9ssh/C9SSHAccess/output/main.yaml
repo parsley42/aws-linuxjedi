@@ -1,0 +1,265 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Stack that creates security groups for allowing ssh from the us-east-1 region
+Parameters:
+    VpcId:
+        Description: The ID of the VPC where the SecurityGroup will be created
+        Type: String
+Resources:
+    USEastEC2SecurityGroup0:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            VpcId: !Ref VpcId
+            GroupDescription: Enable SSH access from ec2 in us-east-1 region
+            SecurityGroupIngress:
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 18.204.0.0/14
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 18.208.0.0/13
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 18.232.0.0/14
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 23.20.0.0/14
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 34.192.0.0/12
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 34.224.0.0/12
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 35.153.0.0/16
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 35.168.0.0/13
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 50.16.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 50.19.0.0/16
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.0.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.2.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.4.0.0/14
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.20.0.0/14
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.44.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.54.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.70.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.72.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.86.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.90.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.94.116.0/22
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.94.248.0/28
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.95.245.0/24
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.95.255.80/28
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 52.200.0.0/13
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.80.0.0/13
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.88.0.0/14
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.92.128.0/17
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.144.0.0/14
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.152.0.0/16
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.156.0.0/14
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.160.0.0/13
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.172.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.174.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.196.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.198.0.0/16
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.204.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.208.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.210.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.221.0.0/16
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.224.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.226.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.234.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.236.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 54.242.0.0/15
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 67.202.0.0/18
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 72.44.32.0/19
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 75.101.128.0/17
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 107.20.0.0/14
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 174.129.0.0/16
+            Tags:
+            -   Key: Creator
+                Value: parsley@linuxjedi.org
+            -   Key: Project
+                Value: LinuxJedi
+            -   Key: Repository
+                Value: github.com/parsley/aws-linuxjedi
+            -   Key: Name
+                Value: USEastEC2SecurityGroup0
+    USEastEC2SecurityGroup1:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            VpcId: !Ref VpcId
+            GroupDescription: Enable SSH access from ec2 in us-east-1 region
+            SecurityGroupIngress:
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 184.72.64.0/18
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 184.72.128.0/17
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 184.73.0.0/16
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 204.236.192.0/18
+            -   IpProtocol: tcp
+                FromPort: '22'
+                ToPort: '22'
+                CidrIp: 216.182.224.0/20
+            Tags:
+            -   Key: Creator
+                Value: parsley@linuxjedi.org
+            -   Key: Project
+                Value: LinuxJedi
+            -   Key: Repository
+                Value: github.com/parsley/aws-linuxjedi
+            -   Key: Name
+                Value: USEastEC2SecurityGroup1
+Outputs:
+    UsEastSSHSG0:
+        Description: Security Group Allowing SSH from us-east-1 ec2
+        Value: !Ref USEastEC2SecurityGroup0
+    UsEastSSHSG1:
+        Description: Security Group Allowing SSH from us-east-1 ec2
+        Value: !Ref USEastEC2SecurityGroup1

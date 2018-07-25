@@ -1,0 +1,14 @@
+---
+- name: Download Go binaries to /usr/local/go
+  unarchive:
+    src: https://storage.googleapis.com/golang/go{{ go_version }}.linux-amd64.tar.gz
+    dest: /usr/local
+    remote_src: yes
+    creates: /usr/local/go/bin/go
+- name: Add Go binaries to PATH
+  copy:
+    dest: /etc/profile.d/golang.sh
+    content: |
+      PATH=$HOME:/go/bin:$PATH:/usr/local/go/bin
+      export PATH
+    mode: 0644

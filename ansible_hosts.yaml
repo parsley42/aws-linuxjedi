@@ -1,0 +1,6 @@
+all: # keys must be unique, i.e. only one 'hosts' per group
+    hosts:
+        c9test:
+            ansible_host: c9test.linuxjedi.org
+        parse:
+            ansible_host: parse.linuxjedi.org

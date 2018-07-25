@@ -1,0 +1,46 @@
+---
+# Boilerplate: encapsulate deployment vars in config var for simple access
+- set_fact:
+    config: "{{ deployments[deployment] }}"
+# install-gopherbot.yaml is included by deploy.yaml for any host that has
+# gopherbot listed in it's applications
+- name: Create Gopherbot install directory
+  file:
+    path: "{{ config.install_directory }}"
+    state: directory
+- name: Download Gopherbot archive
+  unarchive:
+    src: "{{ gopherbot_archive }}"
+    dest: "{{ config.install_directory }}"
+    remote_src: yes
+- name: Create installed config directory
+  file:
+    path: "{{ config.install_directory }}/conf"
+    state: directory
+- name: Install per-server gopherbot.yaml
+  template:
+    src: gopherbot_yaml.j2
+    dest: "{{ config.install_directory }}/conf/gopherbot.yaml"
+    owner: root
+    group: root
+    mode: 0644
+- name: Install per-server duo.yaml config
+  template:
+    src: gopherbot_duo.j2
+    dest: "{{ config.install_directory }}/conf/plugins/duo.yaml"
+    owner: root
+    group: root
+    mode: 0644
+- name: Add systemd unit file for Gopherbot
+  template:
+    src: gopherbot_service.j2
+    dest: /etc/systemd/system/{{ config.service_name }}.service
+    owner: root
+    group: root
+    mode: 0644
+  register: unit
+- name: Make sure Gopherbot runs on startup
+  systemd: daemon_reload=yes name={{ config.service_name }} state=started enabled=yes
+  when: unit.changed
+- name: Restart Gopherbot
+  systemd: name={{ config.service_name }} state=restarted
