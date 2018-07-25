@@ -1,5 +1,8 @@
 This repository forms the bulk of data files I use to manage LinuxJedi.org. Publishing this on GitHub serves primarily as example code for use with `ruby-awstools` and `Gopherbot` - my two main free software projects.
 
+What follows below is primarily my own notes on how things are done. Eventually,
+all of this should be done by **Gopherbot** automated jobs / **GopherCI**.
+
 # Managing LinuxJedi AWS Resources
 
 ## Initializing an AWS Session
