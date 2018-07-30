@@ -1,30 +1,15 @@
 ---
-# c9devel.yaml - playbook for creating a LinuxJedi devel bastion from
-# an ljbase AMI created with ljstandard.yaml
+# addc9.yaml - playbook for adding Cloud9 user to an instance; primarily
+# for allowing Cloud9 logins to Gopherbot dev instances
 
 # note: run aws_init first to create the build user
 
-- hosts: "{{ target }}"
-  remote_user: build
-  tasks:
-  - name: Set mountpoints for a Cloud9 developer instances
-    set_fact:
-      remote_user: build
-      mount_points:
-      - dir_name: home
-        mount_point: /home
-      - dir_name: www
-        mount_point: /var/www
-      - dir_name: httpconf
-        mount_point: /etc/httpd/conf.d
-      - dir_name: ssl
-        mount_point: /etc/pki
 # platform-specific definitions including data volumes
 - name: Set platform-specific variables
   import_playbook: platform-vars.yaml
 
 - hosts: "{{ target }}"
-  name: Set up data volume and users
+  name: Cloud9 User
   become: yes
   remote_user: build
   tasks:
@@ -34,9 +19,6 @@
       state: absent
       remove: yes
       force: yes
-  - name: Data Volume role
-    import_role:
-      name: data_vol_single
   - name: Create Users role
     import_role:
       name: ansible-users
@@ -75,16 +57,3 @@
         group: "{{ item.username }}"
         mode: 0600
     with_items: "{{ users }}"
-
-- hosts: "{{ target }}"
-  name: Remove build user authorized keys
-  become: yes
-  remote_user: build
-  tasks:
-  - file:
-      path: /build/.ssh/authorized_keys
-      state: absent
-  - user:
-      name: build
-      state: absent
-      force: yes
