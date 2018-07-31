@@ -9,6 +9,6 @@
   copy:
     dest: /etc/profile.d/golang.sh
     content: |
-      PATH=$HOME:/go/bin:$PATH:/usr/local/go/bin
+      PATH=$HOME/go/bin:$PATH:/usr/local/go/bin
       export PATH
     mode: 0644
