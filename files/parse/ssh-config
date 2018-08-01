@@ -1,4 +1,0 @@
-Host *.linuxjedi.org
-	StrictHostKeyChecking false
-	UserKnownHostsFile /dev/null
-	CheckHostIP false

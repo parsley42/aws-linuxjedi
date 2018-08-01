@@ -1,4 +1,6 @@
-This repository forms the bulk of data files I use to manage LinuxJedi.org. Publishing this on GitHub serves primarily as example code for use with `ruby-awstools` and `Gopherbot` - my two main free software projects.
+This repository forms the bulk of data files I use to manage CloudFormat assets for LinuxJedi.org. Publishing this on GitHub serves primarily as example code for use with `ruby-awstools` and `Gopherbot` - my two main free software projects. In addition to this repository, see also `parsley42/linuxjedi-amis`, `parsley42/aws-devel`, and `parsley42/deploy-gopherbot`.
+
+TODO: Remove most of the cruft below; large chunks have been moved in to separate repositories (linuxjedi-amis and aws-devel).
 
 What follows below is primarily my own notes on how things are done. Eventually,
 all of this should be done by **Gopherbot** automated jobs / **GopherCI**.

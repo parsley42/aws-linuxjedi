@@ -1,8 +1,0 @@
-all: # keys must be unique, i.e. only one 'hosts' per group
-  hosts:
-    parse:
-      ansible_host: parse.linuxjedi.org
-    floyd:
-      ansible_host: floyd.linuxjedi.org
-    bender:
-      ansible_host: bender.linuxjedi.org
